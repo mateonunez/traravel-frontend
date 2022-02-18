@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "traravel",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -23,6 +23,7 @@
     }
   },
   "dependencies": {
+    "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.13.6",
     "core-js": "^3.15.1",
     "nuxt": "^2.15.7"
@@ -39,6 +40,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.0.5",
+    "classnames": "^2.3.1",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-nuxt": "^2.0.0",
