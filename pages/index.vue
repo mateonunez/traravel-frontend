@@ -1,7 +1,19 @@
 <template>
-  <Tutorial/>
+  <div>Hello, {{ user.name }}</div>
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'IndexPage',
+
+  computed: {
+    user() {
+      return this.$auth.state.user
+    }
+  },
+
+  mounted() {
+    console.log(this.$auth)
+  }
+}
 </script>
