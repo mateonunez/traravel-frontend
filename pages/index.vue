@@ -1,13 +1,19 @@
 <template>
-  <Login />
+  <div>Hello, {{ user.name }}</div>
 </template>
 
 <script>
 export default {
   name: 'IndexPage',
 
-  components: {
-    Login: () => import('@/components/auth/Login.vue')
+  computed: {
+    user() {
+      return this.$auth.state.user
+    }
+  },
+
+  mounted() {
+    console.log(this.$auth)
   }
 }
 </script>

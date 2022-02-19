@@ -113,27 +113,43 @@ export default {
       )
     },
     validPassword() {
-      return (
-        this.password === null || // prevent error at first render
-        (this.password?.length > 0 &&
-          /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(this.password))
-      )
+      return this.password === null || this.password?.length > 3
     },
     buttonDisabled() {
-      return !this.validEmail || !this.validPassword || this.loading
+      return (
+        this.email === null ||
+        this.password === null ||
+        !this.validEmail ||
+        !this.validPassword ||
+        this.loading
+      )
     }
   },
 
   methods: {
     cn,
-    handleLogin(e) {
+    async handleLogin(e) {
       e.preventDefault()
 
       this.loading = true
-      setTimeout(() => {
+
+      try {
+        await this.$auth.loginWith('local', {
+          data: {
+            email: this.email,
+            password: this.password
+          }
+        })
+
+        this.$router.push('/')
+      } catch ({ response }) {
+        const {
+          data: { message }
+        } = response
+
         this.loading = false
-        console.log(this.email, this.password)
-      }, 1000)
+        this.$store.dispatch('ui/showError', { message })
+      }
     }
   }
 }

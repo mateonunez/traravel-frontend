@@ -61,8 +61,7 @@ export default {
         }
       },
       redirect: {
-        login: '/login',
-        logout: '/logout',
+        login: '/auth/login',
         home: '/'
       }
     }
@@ -76,5 +75,10 @@ export default {
         autoprefixer: {}
       }
     }
+  },
+
+  // Router Configuration
+  router: {
+    // middleware: ['auth']
   }
 }
