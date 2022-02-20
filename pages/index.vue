@@ -14,10 +14,13 @@
     <!-- Background -->
     <div class="block full-height full-width">
       <img
-        :src="require(`~/assets/images/background/${backgroundImage}`)"
+        :src="
+          backgroundImage !== null &&
+          require(`~/assets/images/background/${backgroundImage}`)
+        "
         alt=""
         aria-disabled="true"
-        class="absolute block w-full h-full object-cover top-0 left-0 blur-sm"
+        class="absolute transition duration-1000 ease-out block w-full h-full object-cover top-0 left-0 blur-sm"
       />
 
       <!-- Background Gradient -->
@@ -48,16 +51,26 @@ export default {
 
   middleware: 'auth',
 
+  data: () => ({
+    backgroundImage: '3.jpg'
+  }),
+
   computed: {
     user() {
       return this.$auth.state.user
-    },
-    backgroundImage() {
-      return `${Math.floor(Math.random() * 5) + 1}.jpg`
     }
   },
 
+  created() {
+    setInterval(() => {
+      this.animateBackground()
+    }, 3000)
+  },
+
   methods: {
+    animateBackground() {
+      this.backgroundImage = `${Math.floor(Math.random() * 5) + 1}.jpg`
+    },
     handleLogin() {
       this.user
         ? this.$router.push('/auth/me')
