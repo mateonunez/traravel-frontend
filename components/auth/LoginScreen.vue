@@ -90,12 +90,12 @@
 import cn from 'classnames'
 
 export default {
-  name: 'Login',
+  name: 'LoginScreen',
 
   components: {
     MailIcon: () => import('@/components/icons/Mail.vue'),
     LockClosedIcon: () => import('@/components/icons/LockClosed.vue'),
-    Spinner: () => import('@/components/common/Spinner.vue')
+    Spinner: () => import('@/components/ui/Spinner.vue')
   },
 
   data: () => ({

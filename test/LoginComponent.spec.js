@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Login from '@/components/auth/Login.vue'
+import Login from '~/components/auth/LoginScreen'
 
 describe('LoginComponent', () => {
   test('mounted Login component', () => {
