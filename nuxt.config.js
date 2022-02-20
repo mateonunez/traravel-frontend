@@ -59,11 +59,11 @@ export default {
           user: { url: '/users/me', method: 'get', propertyName: 'data' },
           logout: false
         }
-      },
-      redirect: {
-        login: '/auth/login',
-        home: '/'
       }
+    },
+    redirect: {
+      login: '/auth/login',
+      home: '/'
     }
   },
 
