@@ -7,7 +7,10 @@
           <span class="font-bold">{{ name }}</span>
         </div>
         <div class="flex flex-col justify-center">
-          <span class="text-xs text-slate-600">
+          <span
+            :title="`Durata del Travel: ${numberOfDays} giorni e ${numberOfNights} notti`"
+            class="text-sm text-slate-600"
+          >
             {{ numberOfDays }}☀️ / {{ numberOfNights }}🌑
           </span>
         </div>
@@ -44,15 +47,15 @@
       </div>
 
       <!-- Actions -->
-      <div class="flex flex-row justify-between mt-4">
+      <div class="flex flex-row justify-around mt-4">
         <button
-          class="w-full px-4 py-2 mr-2 text-sm font-bold bg-red-500 rounded-md text-slate-100"
+          class="w-full px-4 py-2 mr-2 text-sm font-bold bg-red-500 rounded-md md:max-w-xs max-w text-slate-100"
         >
           {{ mainButtonLabel }}
         </button>
 
         <button
-          class="w-full px-4 py-2 ml-2 text-sm font-bold text-red-700 bg-red-500 rounded-md bg-opacity-10"
+          class="w-full px-4 py-2 ml-2 text-sm font-bold text-red-700 bg-red-500 rounded-md md:max-w-xs bg-opacity-10"
         >
           {{ secondaryButtonLabel }}
         </button>
@@ -100,11 +103,11 @@
               <div
                 v-for="mood in moods"
                 :key="mood.id"
-                class="flex flex-row justify-between mx-4 mt-2"
+                class="flex flex-row justify-between mx-4 mt-2 md:mx-16"
               >
-                <span class="w-1/3 text-sm">{{ mood.name }}</span>
+                <span class="w-1/3 text-sm italic">{{ mood.name }}</span>
                 <span
-                  class="text-sm"
+                  class="text-sm font-bold"
                   :style="`color: ${getRatingColor(mood.pivot.rating)}`"
                 >
                   {{ mood.pivot.rating }}
