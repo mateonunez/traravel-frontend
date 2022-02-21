@@ -49,8 +49,6 @@ export default {
 
   layout: 'empty',
 
-  middleware: 'auth',
-
   data: () => ({
     backgroundImage: '3.jpg'
   }),
