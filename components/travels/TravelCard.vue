@@ -8,7 +8,7 @@
         </div>
         <div class="flex flex-col justify-center">
           <span class="text-xs text-slate-600">
-            {{ numberOfDays }}☀️/{{ numberOfNights }}🌑
+            {{ numberOfDays }}☀️ / {{ numberOfNights }}🌑
           </span>
         </div>
       </div>
@@ -46,13 +46,13 @@
       <!-- Actions -->
       <div class="flex flex-row justify-between mt-4">
         <button
-          class="w-full px-4 py-2 mr-2 text-slate-100 bg-red-500 rounded-md text-sm font-bold"
+          class="w-full px-4 py-2 mr-2 text-sm font-bold bg-red-500 rounded-md text-slate-100"
         >
           {{ mainButtonLabel }}
         </button>
 
         <button
-          class="w-full px-4 py-2 ml-2 bg-red-500 bg-opacity-10 rounded-md text-red-700 font-bold text-sm"
+          class="w-full px-4 py-2 ml-2 text-sm font-bold text-red-700 bg-red-500 rounded-md bg-opacity-10"
         >
           {{ secondaryButtonLabel }}
         </button>
@@ -60,10 +60,10 @@
 
       <!-- Footer -->
       <div
-        v-if="description"
-        class="flex flex-row justify-center items-center mt-4"
+        v-if="hasMoreDetails"
+        class="flex flex-col items-center justify-center my-4"
       >
-        <div>
+        <div class="flex flex-row">
           <button
             class="focus:outline-none"
             aria-disabled="true"
@@ -71,27 +71,57 @@
           >
             <ChevronDown
               v-if="!panelExpanded"
-              class="h-8 w-8 text-slate-700 transition transform duration-300 hover:scale-110 hover:text-slate-900"
+              class="w-8 h-8 transition duration-300 transform text-slate-700 hover:scale-110 hover:text-slate-900"
             />
 
             <ChevronUp
               v-else
-              class="h-8 w-8 text-slate-700 transition transform duration-300 hover:scale-110 hover:text-slate-900"
+              class="w-8 h-8 transition duration-300 transform text-slate-700 hover:scale-110 hover:text-slate-900"
             />
           </button>
         </div>
-      </div>
 
-      <!-- Travel description -->
-      <div
-        :class="
-          cn(
-            'text-center mt-1 transition transform duration-500 ease-in-out block',
-            panelExpanded ? 'opacity-100' : 'opacity-0'
-          )
-        "
-      >
-        <span v-if="panelExpanded">{{ description }}</span>
+        <!-- Travel Moods -->
+
+        <!-- Travel description -->
+        <div
+          :class="
+            cn(
+              'flex flex-col text-center mt-1 transition transform duration-500 ease-in-out w-full',
+              panelExpanded ? 'opacity-100' : 'opacity-0'
+            )
+          "
+        >
+          <div v-if="panelExpanded">
+            <!-- Moods -->
+
+            <div class="flex flex-col mt-2 text-left">
+              <span class="mb-1 font-bold text-md">🕶 Moods</span>
+              <div
+                v-for="mood in moods"
+                :key="mood.id"
+                class="flex flex-row justify-between mx-4 mt-2"
+              >
+                <span class="w-1/3 text-sm">{{ mood.name }}</span>
+                <span
+                  class="text-sm"
+                  :style="`color: ${getRatingColor(mood.pivot.rating)}`"
+                >
+                  {{ mood.pivot.rating }}
+                </span>
+                <span class="">{{ mood.emoji }}</span>
+              </div>
+            </div>
+
+            <!-- Descrpition -->
+            <div class="flex flex-col mt-2 text-left">
+              <span class="font-bold text-md">📝 Descrizione</span>
+              <span class="mt-2 ml-4 text-xs">
+                {{ description }}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -99,6 +129,7 @@
 
 <script>
 import cn from 'classnames'
+import colors from 'tailwindcss/colors'
 import { mapGetters } from 'vuex'
 import { currencyForHumans } from '@/lib/filters/currency'
 
@@ -184,11 +215,28 @@ export default {
 
     secondaryButtonLabel() {
       return this.imAdmin ? 'Elimina' : 'Ulteriori dettagli'
+    },
+
+    hasMoreDetails() {
+      return this.description || this.moods.length > 0
     }
   },
 
+  mounted() {
+    console.log(this.moods)
+  },
+
   methods: {
-    cn
+    cn,
+
+    // Returns the hext because color classes are not rendered
+    getRatingColor(rating) {
+      const base = rating > 60 ? 'emerald' : rating > 30 ? 'amber' : 'red'
+      const shade = Math.floor(rating / 10) * 100
+      const hex = colors[base][shade]
+
+      return hex || '#000'
+    }
   }
 }
 </script>

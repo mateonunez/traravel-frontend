@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center mx-auto">
+  <div class="flex items-center justify-center mx-auto">
     <Login />
   </div>
 </template>
