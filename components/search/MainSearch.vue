@@ -1,29 +1,58 @@
 <template>
-  <div class="relative mb-5">
-    <label>
-      <input
-        ref="queryRef"
-        v-model="query"
-        :placeholder="placeholder"
-        type="text"
-        class="w-full h-16 px-12 text-xl transition ease-in-out border border-solid rounded-lg shadow-lg md:w-96 focus:border-blue-500 focus:outline-none"
-        @click="handleSearch"
-      />
-      <SearchIcon
-        class="absolute bottom-0 left-0 w-8 h-8 transform translate-x-2 -translate-y-5 text-slate-400"
-      />
-      <button
+  <div class="relative my-auto">
+    <div
+      :class="
+        cn(
+          'ease-in transition-all duration-1000 transform ',
+          focused ? '-translate-y-24 w-fit' : 'translate-y-[12rem] w-72'
+        )
+      "
+      :style="cn(focused ? 'width: calc(100vw - 20rem)' : 'width: 24rem')"
+    >
+      <div>
+        <!-- Input -->
+        <input
+          ref="queryRef"
+          v-model="query"
+          :placeholder="placeholder"
+          type="text"
+          :class="
+            cn(
+              'flex self-center w-full h-16 px-12 text-xl transition duration-1000 transform border shadow-lg  focus:outline-none',
+              focused ? 'rounded-t-lg' : 'rounded-lg'
+            )
+          "
+          @focus="focused = true"
+        />
+
+        <!-- Search Icon -->
+        <SearchIcon
+          class="absolute top-0 left-0 w-8 h-8 transform translate-x-2 translate-y-5 text-slate-400"
+        />
+
+        <!-- Cross icon -->
+        <button
+          :class="
+            cn(
+              'absolute top-0 right-0 w-6 h-6 transition transform -translate-x-3 duration-300 translate-y-5 hover:rotate-180',
+              focused ? 'opacity-100' : 'opacity-0'
+            )
+          "
+          @click="resetQuery"
+        >
+          <Cross class="w-full h-full text-slate-600" />
+        </button>
+      </div>
+
+      <div
         :class="
           cn(
-            'absolute bottom-0 right-0 w-6 h-6 transition transform -translate-x-3 duration-300 -translate-y-5 hover:rotate-180',
-            query ? 'opacity-100' : 'opacity-0'
+            'w-full bg-white border rounded-b-lg transition transform duration-1000 ease-in-out h-96',
+            focused ? 'opacity-100' : 'opacity-0'
           )
         "
-        @click="resetQuery"
-      >
-        <Cross class="w-full h-full text-slate-600" />
-      </button>
-    </label>
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -46,6 +75,7 @@ export default {
 
   data: () => ({
     query: null,
+    focused: false,
     placeholder: 'Dove stiamo andando? 🌏'
   }),
 
@@ -53,8 +83,14 @@ export default {
     setInterval(() => {
       this.animateDestination()
     }, 3000)
+  },
 
-    console.log(this.destinations)
+  mounted() {
+    document.addEventListener('keyup', ({ key }) => {
+      if (key === 'Escape') {
+        this.resetQuery()
+      }
+    })
   },
 
   methods: {
@@ -66,12 +102,9 @@ export default {
           ].substring(0, 30) + '...'
         : 'Proponi una nuova destinazione ✈️'
     },
-    handleSearch() {
-      console.log('searching...')
-    },
     resetQuery() {
+      this.focused = !this.focused
       this.query = null
-      this.$refs.queryRef?.focus()
     }
   }
 }
