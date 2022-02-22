@@ -1,6 +1,7 @@
 export const state = () => ({
   travels: {
     data: [],
+    results: [], // for search
     loading: false,
     fetched: false
   }
@@ -8,6 +9,7 @@ export const state = () => ({
 
 export const getters = {
   get: ({ travels }) => travels.data,
+  getResults: ({ travels }) => travels.results,
   loding: ({ travels }) => travels.loading
 }
 
@@ -15,6 +17,9 @@ export const mutations = {
   /** Setters */
   setTravels({ travels }, value) {
     travels.data = value
+  },
+  setTravelsResults({ travels }, value) {
+    travels.results = value
   },
   setLoading({ travels }, value) {
     travels.loading = value
@@ -62,5 +67,19 @@ export const actions = {
       commit('setFetched', true)
       commit('setLoading', false)
     }
+  },
+
+  async search({ commit }, value) {
+    const response = await this.$axios.get('/travels', {
+      params: {
+        q: value
+      }
+    })
+
+    const {
+      data: { data: travels = [] }
+    } = response
+
+    commit('setTravelsResults', travels)
   }
 }
