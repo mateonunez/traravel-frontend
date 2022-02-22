@@ -23,22 +23,34 @@
 
       <!-- Slug input -->
       <div class="relative mb-5">
-        <span class="font-bold">Slug</span>
-        <label>
-          <input
-            v-model="payload.slug"
-            type="text"
-            placeholder="Slug"
-            :class="
-              cn(
-                'w-full appearance-none text-slate-900 py-2 pl-12 pr-2 transition ease-in-out border border-solid rounded-lg focus:border-blue-500 focus:outline-none'
-              )
-            "
+        <div>
+          <span class="font-bold">Slug</span>
+          <label>
+            <input
+              v-model="payload.slug"
+              type="text"
+              placeholder="Slug"
+              :disabled="!isSlugEditable"
+              :class="
+                cn(
+                  'w-full appearance-none disabled:bg-gray-300 text-slate-900 py-2 pl-12 pr-2 transition ease-in-out border border-solid rounded-lg focus:border-blue-500 focus:outline-none'
+                )
+              "
+            />
+          </label>
+          <LinkIcon
+            class="absolute bottom-0 left-0 w-6 h-6 -mb-1 transform translate-x-1/2 -translate-y-8 text-slate-500"
           />
-        </label>
-        <LinkIcon
-          class="absolute bottom-0 left-0 w-6 h-6 -mb-1 transform translate-x-1/2 -translate-y-1/2 text-slate-500"
-        />
+        </div>
+        <div class="justify-center mt-1 text-xs text-right">
+          <input
+            id="editSlug"
+            type="checkbox"
+            class="w-3 h-3 border rounded-md checked:bg-red-700 checked:border-red-700"
+            @change="isSlugEditable = !isSlugEditable"
+          />
+          <label class="inline-block" for="editSlug">Modifica slug</label>
+        </div>
       </div>
 
       <!-- Description -->
@@ -67,6 +79,7 @@
         <div
           class="flex flex-col justify-center bg-white rounded-lg text-slate-900"
         >
+          <!-- Tours -->
           <div
             v-for="tour in travel.tours"
             :key="tour.id"
@@ -135,6 +148,9 @@
               <PlusIcon />
             </button>
           </div>
+
+          <!-- TODO Moods -->
+          <!-- isPublic is missing -->
         </div>
       </div>
 
@@ -169,6 +185,7 @@
 import cn from 'classnames'
 import { currencyForHumans } from '~/lib/filters/currency'
 import { dateForHumans } from '~/lib/filters/date'
+import { kebapCase } from '~/lib/helpers/string'
 
 export default {
   name: 'TravelEditCreate',
@@ -195,7 +212,8 @@ export default {
   data: () => ({
     payload: {},
     loading: false,
-    buttonDisabled: false
+    buttonDisabled: false,
+    isSlugEditable: false
   }),
 
   computed: {
@@ -212,6 +230,9 @@ export default {
       if (newValue) {
         this.payload = { ...newValue }
       }
+    },
+    'payload.name'(newValue) {
+      this.payload.slug = newValue ? kebapCase(newValue) : ''
     }
   },
 
@@ -230,21 +251,50 @@ export default {
         console.log('editing tour')
       }
     },
+    preparePayload() {
+      return this.payload
+    },
     handleSubmit(e) {
       e.preventDefault()
 
+      if (this.isEditing) {
+        this.edit()
+      } else {
+        this.create()
+      }
+    },
+    async edit() {
+      const payload = this.preparePayload()
+
+      this.buttonDisabled = true
       this.loading = true
 
-      setTimeout(() => {
-        this.loading = false
-        this.buttonDisabled = true
-      }, 1000)
+      try {
+        await this.$store.dispatch('travels/update', {
+          id: this.travel.id,
+          payload
+        })
 
-      if (this.isEditing) {
-        console.log(this.payload)
-      } else {
-        console.log('create mode')
+        this.loading = false
+        this.buttonDisabled = false
+
+        this.$store.dispatch('ui/showMessage', {
+          message: 'Travel modificato con successo'
+        })
+
+        this.$router.push('/travels')
+      } catch ({ response }) {
+        const {
+          data: { message }
+        } = response
+
+        this.loading = false
+        this.buttonDisabled = false
+        this.$store.dispatch('ui/showError', { message })
       }
+    },
+    async create() {
+      await Promise.resolve(true)
     }
   }
 }

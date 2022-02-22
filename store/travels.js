@@ -98,5 +98,20 @@ export const actions = {
     } = response
 
     commit('setResults', travels)
+  },
+
+  async update({ commit }, { id, payload }) {
+    commit('setLoading', true)
+
+    const response = await this.$axios.put(`/travels/${id}`, payload)
+
+    const {
+      data: { data: travel = {} }
+    } = response
+
+    commit('update', travel)
+    // commit('setEntity', travel)
+    commit('setFetched', true)
+    commit('setLoading', false)
   }
 }
