@@ -166,7 +166,6 @@ export default {
       this.query = null
       this.searching = false
     },
-
     async search() {
       try {
         // real search engine feedback :D
@@ -182,8 +181,6 @@ export default {
       } catch (e) {
         console.error(e)
       }
-      // this.focused = true
-      // this.$emit('search', this.query)
     }
   }
 }
