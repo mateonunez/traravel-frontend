@@ -20,21 +20,15 @@
     <!-- Content -->
     <div class="flex flex-col w-full px-4 py-8 mx-auto mt-20 md:w-1/2">
       <!-- Title -->
-      <div class="flex flex-row items-end">
-        <h1 class="text-2xl font-bold leading-none text-slate-800">
-          Modifica Travel
-        </h1>
-        <span class="ml-2 text-sm leading-none">{{ travel.name }}</span>
-      </div>
-
-      <!-- Add new -->
-      <div class="flex flex-row justify-center mt-4 ml-auto">
-        <button
-          class="w-full px-4 py-2 mr-2 text-sm font-bold bg-red-500 rounded-md text-slate-100"
-          @click="$router.push('/travels/create')"
-        >
-          Nuovo Travel
-        </button>
+      <div class="flex flex-row items-center justify-between">
+        <div class="flex flex-col w-2/3">
+          <h1 class="text-2xl font-bold leading-none text-slate-800">
+            Modifica Travel
+          </h1>
+        </div>
+        <div class="flex flex-col w-1/3">
+          <span class="ml-2 text-sm leading-none">{{ travel.name }}</span>
+        </div>
       </div>
     </div>
 
