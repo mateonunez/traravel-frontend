@@ -1,9 +1,13 @@
 <template>
-  <div>Me</div>
+  <Travels />
 </template>
 <script>
 export default {
   name: 'RegisterPage',
+
+  components: {
+    Travels: () => import('~/components/travels/TravelsScreen')
+  },
 
   middleware: 'auth',
 

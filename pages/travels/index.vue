@@ -1,12 +1,12 @@
 <template>
-  <TravelsScreen />
+  <Travels />
 </template>
 <script>
 export default {
   name: 'RegisterPage',
 
   components: {
-    TravelsScreen: () => import('~/components/travels/TravelsScreen')
+    Travels: () => import('~/components/travels/TravelsScreen')
   },
 
   middleware: 'auth',
