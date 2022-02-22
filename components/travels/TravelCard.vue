@@ -188,10 +188,10 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(['imAdmin']),
+    ...mapGetters(['imAdmin', 'imEditor']),
 
     mainButtonLabel() {
-      return this.imAdmin ? 'Modifica' : 'Prenota'
+      return this.imEditor ? 'Modifica' : 'Prenota'
     },
 
     secondaryButtonLabel() {
@@ -201,10 +201,6 @@ export default {
     hasMoreDetails() {
       return this.description || this.moods.length > 0
     }
-  },
-
-  mounted() {
-    console.log(this.moods)
   },
 
   methods: {
