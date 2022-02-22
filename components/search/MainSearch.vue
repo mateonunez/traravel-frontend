@@ -4,7 +4,7 @@
       :class="
         cn(
           'ease-in transition-all duration-1000 transform',
-          focused ? '-translate-y-14 focused' : 'translate-y-1/2 w-80'
+          focused ? '-translate-y-14 focused' : 'translate-y-1/2 w-96'
         )
       "
     >
@@ -65,6 +65,7 @@
             :key="travel.id"
             class="flex flex-row items-center w-full my-2 transition duration-300 ease-linear transform rounded-lg cursor-pointer hover:scale-105 hover:bg-gray-50"
             :title="`${travel.description.substring(0, 140)}...`"
+            @click="$router.push(`/travels/${travel.slug}`)"
           >
             <div class="flex flex-col">
               <img
@@ -75,7 +76,10 @@
             </div>
             <div class="flex flex-col justify-center ml-4">
               <div class="flex flex-row">
-                <span class="font-bold">{{ travel.name }}</span>
+                <div class="flex flex-col justify-center">
+                  <span class="font-bold">{{ travel.name }}</span>
+                </div>
+                <div class="flex flex-col"></div>
               </div>
               <div class="flex flex-row">
                 <span class="text-xs text-slate-600">
@@ -147,6 +151,9 @@ export default {
 
   methods: {
     cn,
+    sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms))
+    },
     animateDestination() {
       this.placeholder = this.destinations.length
         ? this.destinations[
@@ -162,15 +169,16 @@ export default {
 
     async search() {
       try {
-        this.focused = true
+        // real search engine feedback :D
         this.searching = true
+        await this.sleep(1000)
+        this.focused = true
 
         await this.$store.dispatch('travels/search', this.query)
 
         // prevent animation collision
-        setTimeout(() => {
-          this.searching = false
-        }, 1000)
+        await this.sleep(1000)
+        this.searching = false
       } catch (e) {
         console.error(e)
       }
