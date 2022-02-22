@@ -179,7 +179,7 @@ export default {
       this.searching = false
     },
     computeTravelPrice(tours) {
-      return tours.reduce((acc, tour) => acc + tour.price / 100, 0)
+      return tours.reduce((acc, tour) => acc + tour.price, 0)
     },
     async search() {
       try {
