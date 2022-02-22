@@ -46,7 +46,7 @@
           <input
             id="editSlug"
             type="checkbox"
-            class="w-3 h-3 border rounded-md checked:bg-red-700 checked:border-red-700"
+            class="w-3 h-3 border rounded-md accent-red-700"
             @change="isSlugEditable = !isSlugEditable"
           />
           <label class="inline-block" for="editSlug">Modifica slug</label>
@@ -161,7 +161,7 @@
             id="isPublic"
             v-model="payload.isPublic"
             type="checkbox"
-            class="w-6 h-6 border rounded-md checked:bg-red-700 checked:border-red-700"
+            class="w-6 h-6 border accent-red-700"
           />
           <span class="ml-2 text-sm font-bold leading-none text-gray-900">
             Pubblica questo viaggio
