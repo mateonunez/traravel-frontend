@@ -50,12 +50,14 @@
       <div class="flex flex-row justify-around mt-4">
         <button
           class="w-full px-4 py-2 mr-2 text-sm font-bold bg-red-500 rounded-md md:max-w-xs max-w text-slate-100"
+          @click="handlePrimaryButtonClick"
         >
-          {{ mainButtonLabel }}
+          {{ primaryButtonLabel }}
         </button>
 
         <button
           class="w-full px-4 py-2 ml-2 text-sm font-bold text-red-700 bg-red-500 rounded-md md:max-w-xs bg-opacity-10"
+          @click="handleSecondaryButtonClick"
         >
           {{ secondaryButtonLabel }}
         </button>
@@ -190,7 +192,7 @@ export default {
   computed: {
     ...mapGetters(['imAdmin', 'imEditor']),
 
-    mainButtonLabel() {
+    primaryButtonLabel() {
       return this.imEditor ? 'Modifica' : 'Prenota'
     },
 
@@ -213,6 +215,15 @@ export default {
       const hex = colors[base][shade]
 
       return hex || '#000'
+    },
+
+    handlePrimaryButtonClick() {
+      this.imEditor
+        ? this.$router.push(`/travels/${this.slug}/edit`)
+        : this.$router.push(`/travels/${this.slug}/book`)
+    },
+    handleSecondaryButtonClick() {
+      this.$emit('secondary-button-click')
     }
   }
 }

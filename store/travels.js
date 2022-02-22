@@ -1,7 +1,9 @@
 export const state = () => ({
+  // All the travels
   travels: {
     data: [],
     results: [], // for search
+    entity: {}, // for actions (show, edit, delete, book)
     loading: false,
     fetched: false
   }
@@ -10,6 +12,7 @@ export const state = () => ({
 export const getters = {
   get: ({ travels }) => travels.data,
   getResults: ({ travels }) => travels.results,
+  getEntity: ({ travels }) => travels.entity,
   loding: ({ travels }) => travels.loading
 }
 
@@ -18,8 +21,11 @@ export const mutations = {
   setTravels({ travels }, value) {
     travels.data = value
   },
-  setTravelsResults({ travels }, value) {
+  setResults({ travels }, value) {
     travels.results = value
+  },
+  setEntity({ travels }, value) {
+    travels.entity = value
   },
   setLoading({ travels }, value) {
     travels.loading = value
@@ -53,20 +59,31 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetch({ commit, state: { travels } }) {
-    if (!travels.fetched) {
-      commit('setLoading', true)
+  async fetch({ commit }) {
+    commit('setLoading', true)
 
-      const response = await this.$axios.get('/travels')
+    const response = await this.$axios.get('/travels')
 
-      const {
-        data: { data: travels = [] }
-      } = response
+    const {
+      data: { data: travels = [] }
+    } = response
 
-      commit('setTravels', travels)
-      commit('setFetched', true)
-      commit('setLoading', false)
-    }
+    commit('setTravels', travels)
+    commit('setFetched', true)
+    commit('setLoading', false)
+  },
+
+  async show({ commit }, id) {
+    commit('setLoading', true)
+
+    const response = await this.$axios.get(`/travels/${id}`)
+    const {
+      data: { data: travel = {} }
+    } = response
+
+    commit('setEntity', travel)
+    commit('setFetched', true)
+    commit('setLoading', false)
   },
 
   async search({ commit }, value) {
@@ -80,6 +97,6 @@ export const actions = {
       data: { data: travels = [] }
     } = response
 
-    commit('setTravelsResults', travels)
+    commit('setResults', travels)
   }
 }
