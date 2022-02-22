@@ -83,9 +83,9 @@
           <div
             v-for="tour in travel.tours"
             :key="tour.id"
-            class="flex flex-row justify-start p-3 my-2"
+            class="flex flex-row items-center justify-start p-3 my-2"
           >
-            <div class="flex flex-col">
+            <div class="flex flex-col w-40">
               <!-- Image -->
               <img
                 src="https://via.placeholder.com/100"
@@ -193,6 +193,8 @@
         </button>
       </div>
     </form>
+
+    <TourEditCreateDialog ref="tourEditCreateDialog" :tour="tourEntity" />
   </div>
 </template>
 
@@ -214,7 +216,9 @@ export default {
     LocationIcon: () => import('~/components/icons/Location'),
     LinkIcon: () => import('~/components/icons/Link'),
     PlusIcon: () => import('~/components/icons/Plus'),
-    Spinner: () => import('~/components/ui/Spinner')
+    Spinner: () => import('~/components/ui/Spinner'),
+    TourEditCreateDialog: () =>
+      import('~/components/tours/TourEditCreateDialog')
   },
 
   props: {
@@ -226,6 +230,7 @@ export default {
 
   data: () => ({
     payload: {},
+    tourEntity: null,
     loading: false,
     buttonDisabled: false,
     isSlugEditable: false
@@ -261,10 +266,11 @@ export default {
     cn,
     openTourDialog(tour) {
       if (!tour) {
-        console.log('creating tour')
+        this.tourEntity = null
       } else {
-        console.log('editing tour')
+        this.tourEntity = { ...tour }
       }
+      this.$refs.tourEditCreateDialog.show()
     },
     preparePayload() {
       return this.payload
