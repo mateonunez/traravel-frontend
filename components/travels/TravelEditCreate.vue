@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full px-6 py-5 text-white bg-red-500 bg-opacity-90">
-    <form class="flex flex-col my-8 md:w-2/5 md:mx-auto" @submit="handleSubmit">
+    <form class="flex flex-col my-8 md:w-2/3 md:mx-auto" @submit="handleSubmit">
       <!-- Name input -->
       <div class="relative mb-5">
         <span class="font-bold">Nome</span>
@@ -152,6 +152,21 @@
           <!-- TODO Moods -->
           <!-- isPublic is missing -->
         </div>
+      </div>
+
+      <!-- isPublic -->
+      <div class="flex p-3 mb-5 bg-white rounded-lg">
+        <label class="flex items-center" for="isPublic">
+          <input
+            id="isPublic"
+            v-model="payload.isPublic"
+            type="checkbox"
+            class="w-6 h-6 border rounded-md checked:bg-red-700 checked:border-red-700"
+          />
+          <span class="ml-2 text-sm font-bold leading-none text-gray-900">
+            Pubblica questo viaggio
+          </span>
+        </label>
       </div>
 
       <!-- Submit -->
