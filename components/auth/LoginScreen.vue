@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col justify-center max-w-2xl py-20 mx-8 sm:mx-auto fit">
+  <div class="flex flex-col justify-center max-w-2xl py-20 mx-8 fit">
     <!-- Welcome messages -->
     <div class="flex flex-col max-w-md">
-      <h1 class="font-bold text-5xl">Bentornato!</h1>
+      <h1 class="text-5xl font-bold">Bentornato!</h1>
       <span className="-mt-1 text-xs">
         Non perderti nessuna delle nostre avventure. Fai subito il check-in...
         login!
@@ -63,7 +63,7 @@
       </div>
 
       <!-- Submit button -->
-      <div class="flex flex-row mt-auto justify-center items-center">
+      <div class="flex flex-row items-center justify-center mt-auto">
         <button
           :disabled="buttonDisabled"
           type="submit"
@@ -90,12 +90,12 @@
 import cn from 'classnames'
 
 export default {
-  name: 'Login',
+  name: 'LoginScreen',
 
   components: {
     MailIcon: () => import('@/components/icons/Mail.vue'),
     LockClosedIcon: () => import('@/components/icons/LockClosed.vue'),
-    Spinner: () => import('@/components/common/Spinner.vue')
+    Spinner: () => import('@/components/ui/Spinner.vue')
   },
 
   data: () => ({

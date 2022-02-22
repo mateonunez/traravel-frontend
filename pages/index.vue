@@ -1,12 +1,12 @@
 <template>
-  <section class="fixed h-sceen overflow-hidden inset-0 m-0 p-0 z-50">
+  <section class="fixed inset-0 z-50 p-0 m-0 overflow-hidden h-sceen">
     <!-- Navigation -->
     <div
-      class="flex self-center justify-end overflow-hidden rounded-xl shadow-xl full-width"
+      class="flex self-center justify-end overflow-hidden shadow-xl rounded-xl full-width"
     >
       <button class="absolute z-50 p-3" @click="handleLogin">
         <LoginIcon
-          class="h-8 w-8 text-slate-200 transition transform duration-300 hover:scale-110 hover:text-slate-300"
+          class="w-8 h-8 transition duration-300 transform text-slate-200 hover:scale-110 hover:text-slate-300"
         />
       </button>
     </div>
@@ -20,18 +20,18 @@
         "
         alt=""
         aria-disabled="true"
-        class="absolute transition duration-1000 ease-out block w-full h-full object-cover top-0 left-0 blur-sm"
+        class="absolute top-0 left-0 block object-cover w-full h-full transition duration-1000 ease-out blur-sm"
       />
 
       <!-- Background Gradient -->
       <div
-        class="bg-gradient-to-b from-slate-900 to-slate-500 opacity-70 absolute inset-0"
+        class="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-500 opacity-70"
       />
 
       <!-- Page content -->
       <div class="container mx-auto">
-        <div class="absolute inset-0 flex flex-col justify-center items-center">
-          <Search />
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <Search :destinations="travels.map(({ name }) => name)" />
         </div>
       </div>
     </div>
@@ -49,15 +49,20 @@ export default {
 
   layout: 'empty',
 
-  middleware: 'auth',
-
   data: () => ({
     backgroundImage: '3.jpg'
   }),
 
+  async fetch() {
+    await this.$store.dispatch('travels/fetch')
+  },
+
   computed: {
     user() {
-      return this.$auth.state.user
+      return this.$auth.$state.user
+    },
+    travels() {
+      return this.$store.getters['travels/get']
     }
   },
 

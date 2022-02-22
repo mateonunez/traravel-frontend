@@ -1,9 +1,13 @@
 <template>
-  <div>Me</div>
+  <TravelsScreen />
 </template>
 <script>
 export default {
   name: 'RegisterPage',
+
+  components: {
+    TravelsScreen: () => import('~/components/travels/TravelsScreen')
+  },
 
   middleware: 'auth',
 
@@ -11,10 +15,6 @@ export default {
     user() {
       return this.$auth.$state.user
     }
-  },
-
-  mounted() {
-    console.log(this.user)
   }
 }
 </script>

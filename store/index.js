@@ -13,6 +13,6 @@ export const getters = {
    * Checks if user is root
    */
   imAdmin({ auth: { user } }) {
-    return user?.roles?.includes(ROLE_ADMIN)
+    return user?.roles?.some(({ code }) => code === ROLE_ADMIN)
   }
 }
