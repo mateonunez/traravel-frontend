@@ -15,7 +15,7 @@ export const getters = {
   imAdmin({ auth: { user } }) {
     return user?.roles?.some(({ code }) => code === ROLE_ADMIN)
   },
-  imEditor({ auth: { user } }) {
-    return user?.roles?.some(({ code }) => code === ROLE_EDITOR)
+  imEditor({ auth: { user } }, { imAdmin }) {
+    return imAdmin || user?.roles?.some(({ code }) => code === ROLE_EDITOR)
   }
 }
