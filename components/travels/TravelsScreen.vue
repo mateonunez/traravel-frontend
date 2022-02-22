@@ -5,14 +5,14 @@
       <!-- Left Navigator -->
       <Navigator @click="$router.go(-1)">
         <ArrowLeft
-          class="h-8 w-8 text-slate-800 transition transform duration-300 hover:scale-110"
+          class="w-8 h-8 transition duration-300 transform text-slate-800 hover:scale-110"
         />
       </Navigator>
 
       <!-- Cross Navigator -->
       <Navigator @click="$router.push('/')">
         <Cross
-          class="h-8 w-8 text-slate-800 transition transform duration-300 hover:rotate-90"
+          class="w-8 h-8 transition duration-300 transform text-slate-800 hover:rotate-90"
         />
       </Navigator>
     </div>
@@ -21,13 +21,13 @@
     <div class="flex flex-col py-8 mx-8 mt-20 sm:mx-auto md:w-1/2">
       <!-- Title -->
       <div class="flex flex-col">
-        <h1 class="text-2xl leading-none text-slate-800 font-bold">Travels</h1>
+        <h1 class="text-2xl font-bold leading-none text-slate-800">Travels</h1>
       </div>
 
       <!-- Add new -->
-      <div class="flex flex-row justify-center ml-auto mt-4">
+      <div class="flex flex-row justify-center mt-4 ml-auto">
         <button
-          class="w-full px-4 py-2 mr-2 text-slate-100 bg-red-500 rounded-md text-sm font-bold"
+          class="w-full px-4 py-2 mr-2 text-sm font-bold bg-red-500 rounded-md text-slate-100"
           @click="$router.push('/travels/create')"
         >
           Nuovo Travel
@@ -44,6 +44,7 @@
           :number-of-days="travel.numberOfDays"
           :number-of-nights="travel.numberOfNights"
           :moods="travel.moods"
+          :tours="travel.tours"
         />
       </div>
     </div>

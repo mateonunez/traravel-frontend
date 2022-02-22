@@ -176,37 +176,15 @@ export default {
     moods: {
       type: Array,
       default: () => []
+    },
+    tours: {
+      type: Array,
+      default: () => []
     }
   },
 
   data: () => ({
-    panelExpanded: false,
-    tours: [
-      {
-        id: '94682e59-cbbd-44f5-861f-fb06c0ce18da',
-        travelId: '4f4bd032-e7d4-402a-bdf6-aaf6be240d53',
-        name: 'ITICE20211101',
-        startingDate: '2021-11-01',
-        endingDate: '2021-11-08',
-        price: 199900
-      },
-      {
-        id: '90155d92-01e5-4c4b-a5a8-e24011fa8418',
-        travelId: 'cbf304ae-a335-43fa-9e56-811612dcb601',
-        name: 'ITARA20211221',
-        startingDate: '2021-12-21',
-        endingDate: '2021-12-28',
-        price: 189900
-      },
-      {
-        id: '9cefe1bc-eeb7-4d6d-b572-8a7aea2688d1',
-        travelId: 'cbf304ae-a335-43fa-9e56-811612dcb601',
-        name: 'ITARA20211221',
-        startingDate: '2022-01-03',
-        endingDate: '2022-01-10',
-        price: 149900
-      }
-    ]
+    panelExpanded: false
   }),
 
   computed: {
