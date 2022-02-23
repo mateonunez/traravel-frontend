@@ -1,4 +1,4 @@
-import { ROLE_ADMIN } from '~/lib/Role'
+import { ROLE_ADMIN, ROLE_EDITOR } from '~/lib/Role'
 
 export const getters = {
   /**
@@ -14,5 +14,8 @@ export const getters = {
    */
   imAdmin({ auth: { user } }) {
     return user?.roles?.some(({ code }) => code === ROLE_ADMIN)
+  },
+  imEditor({ auth: { user } }, { imAdmin }) {
+    return imAdmin || user?.roles?.some(({ code }) => code === ROLE_EDITOR)
   }
 }

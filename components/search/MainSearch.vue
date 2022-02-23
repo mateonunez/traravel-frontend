@@ -3,7 +3,7 @@
     <div
       :class="
         cn(
-          'ease-in transition-all duration-1000 transform',
+          'ease-in-out transition-all duration-1000 transform',
           focused ? '-translate-y-14 focused' : 'translate-y-1/2 w-96'
         )
       "
@@ -81,10 +81,17 @@
                 </div>
                 <div class="flex flex-col"></div>
               </div>
-              <div class="flex flex-row">
-                <span class="text-xs text-slate-600">
-                  {{ travel.numberOfDays }}☀️ / {{ travel.numberOfNights }}🌑
-                </span>
+              <div class="flex flex-row items-center">
+                <div class="flex flex-col">
+                  <span class="text-sm">
+                    {{ computeTravelPrice(travel.tours) | currencyForHumans }}
+                  </span>
+                </div>
+                <div class="flex flex-col ml-2">
+                  <span class="text-xs text-slate-600">
+                    {{ travel.numberOfDays }}☀️ / {{ travel.numberOfNights }}🌑
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -95,9 +102,14 @@
 </template>
 <script>
 import cn from 'classnames'
+import { currencyForHumans } from '~/lib/filters/currency'
 
 export default {
   name: 'MainSearch',
+
+  filters: {
+    currencyForHumans
+  },
 
   components: {
     Spinner: () => import('~/components/ui/Spinner'),
@@ -165,6 +177,9 @@ export default {
       this.focused = false
       this.query = null
       this.searching = false
+    },
+    computeTravelPrice(tours) {
+      return tours.reduce((acc, tour) => acc + tour.price, 0)
     },
     async search() {
       try {

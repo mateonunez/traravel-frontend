@@ -1,7 +1,9 @@
 export const state = () => ({
+  // All the travels
   travels: {
     data: [],
     results: [], // for search
+    entity: {}, // for actions (show, edit, delete, book)
     loading: false,
     fetched: false
   }
@@ -10,6 +12,7 @@ export const state = () => ({
 export const getters = {
   get: ({ travels }) => travels.data,
   getResults: ({ travels }) => travels.results,
+  getEntity: ({ travels }) => travels.entity,
   loding: ({ travels }) => travels.loading
 }
 
@@ -18,8 +21,11 @@ export const mutations = {
   setTravels({ travels }, value) {
     travels.data = value
   },
-  setTravelsResults({ travels }, value) {
+  setResults({ travels }, value) {
     travels.results = value
+  },
+  setEntity({ travels }, value) {
+    travels.entity = value
   },
   setLoading({ travels }, value) {
     travels.loading = value
@@ -31,13 +37,24 @@ export const mutations = {
   /** Custom methods */
   update({ travels }, value) {
     const travelsFiltered = travels.data.filter(
-      travels => travels.id !== value.id
+      travel => travel.id !== value.id
     )
 
     travelsFiltered.push(value)
 
     travels.data = travels
   },
+
+  updateTour({ travels }, value) {
+    const toursFiltered = travels.entity.tours?.filter(
+      tour => tour.id !== value.id
+    )
+
+    toursFiltered.push(value)
+
+    travels.entity.tours = toursFiltered
+  },
+
   add({ travels }, value) {
     const { data } = travels
 
@@ -45,6 +62,15 @@ export const mutations = {
 
     travels.data = data
   },
+
+  addTour({ travels }, value) {
+    const { entity } = travels
+
+    entity.tours.push(value)
+
+    travels.entity = entity
+  },
+
   delete({ travels }, value) {
     const travelsFiltered = travels.data.filter(travel => travel.id !== value)
 
@@ -53,20 +79,31 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetch({ commit, state: { travels } }) {
-    if (!travels.fetched) {
-      commit('setLoading', true)
+  async fetch({ commit }) {
+    commit('setLoading', true)
 
-      const response = await this.$axios.get('/travels')
+    const response = await this.$axios.get('/travels')
 
-      const {
-        data: { data: travels = [] }
-      } = response
+    const {
+      data: { data: travels = [] }
+    } = response
 
-      commit('setTravels', travels)
-      commit('setFetched', true)
-      commit('setLoading', false)
-    }
+    commit('setTravels', travels)
+    commit('setFetched', true)
+    commit('setLoading', false)
+  },
+
+  async show({ commit }, id) {
+    commit('setLoading', true)
+
+    const response = await this.$axios.get(`/travels/${id}`)
+    const {
+      data: { data: travel = {} }
+    } = response
+
+    commit('setEntity', travel)
+    commit('setFetched', true)
+    commit('setLoading', false)
   },
 
   async search({ commit }, value) {
@@ -80,6 +117,46 @@ export const actions = {
       data: { data: travels = [] }
     } = response
 
-    commit('setTravelsResults', travels)
+    commit('setResults', travels)
+  },
+
+  async update({ commit }, payload) {
+    commit('setLoading', true)
+
+    const response = await this.$axios.put(`/travels/${payload.id}`, payload)
+
+    const {
+      data: { data: travel = {} }
+    } = response
+
+    commit('update', travel)
+    commit('setFetched', true)
+    commit('setLoading', false)
+  },
+
+  async updateTour({ commit }, payload) {
+    commit('setLoading', true)
+
+    const response = await this.$axios.put(`/tours/${payload.id}`, payload)
+
+    const {
+      data: { data: tour = {} }
+    } = response
+
+    commit('updateTour', tour)
+    commit('setLoading', false)
+  },
+
+  async storeTour({ commit }, payload) {
+    commit('setLoading', true)
+
+    const resposne = await this.$axios.post(`/tours`, payload)
+
+    const {
+      data: { data: tour = {} }
+    } = resposne
+
+    commit('addTour', tour)
+    commit('setLoading', false)
   }
 }
