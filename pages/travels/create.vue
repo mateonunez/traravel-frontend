@@ -23,11 +23,8 @@
       <div class="flex flex-row items-center justify-between">
         <div class="flex flex-col w-2/3">
           <h1 class="text-2xl font-bold leading-none text-slate-800">
-            Modifica Travel
+            Crea Nuovo Travel
           </h1>
-        </div>
-        <div class="flex flex-col w-1/3">
-          <span class="ml-2 text-sm leading-none">{{ travel.name }}</span>
         </div>
       </div>
     </div>
@@ -41,7 +38,7 @@
 
 <script>
 export default {
-  name: 'TravelEditPage',
+  name: 'TravelCreatePage',
 
   components: {
     Navigator: () => import('~/components/common/Navigator'),
@@ -50,22 +47,16 @@ export default {
     TravelEditCreate: () => import('~/components/travels/TravelEditCreate')
   },
 
-  async fetch() {
-    // maybe i should improve the error handling here
-    try {
-      const { slug } = this.$route.params
-
-      await this.$store.dispatch('travels/show', slug)
-    } catch (e) {
-      console.error(e)
-      this.$nuxt.error({ statusCode: 404, message: 'Travel not found' })
-    }
-  },
+  middleware: ['auth', 'admin'],
 
   computed: {
     travel() {
       return this.$store.getters['travels/getEntity']
     }
+  },
+
+  created() {
+    this.$store.dispatch('travels/clearEntity')
   }
 }
 </script>

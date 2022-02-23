@@ -46,13 +46,24 @@ export const mutations = {
   },
 
   updateTour({ travels }, value) {
-    const toursFiltered = travels.entity.tours?.filter(
-      tour => tour.id !== value.id
-    )
+    if (value.index) {
+      // create mode
+      const tours = travels.entity.tours
+      delete tours[value.index]
 
-    toursFiltered.push(value)
+      console.log(tours)
+      tours.push(value)
+      console.log(tours)
+      travels.entity.tours = tours
+    } else {
+      // edit mode
+      const toursFiltered = travels.entity.tours?.filter(
+        tour => tour.id !== value.id
+      )
 
-    travels.entity.tours = toursFiltered
+      toursFiltered.push(value)
+      travels.entity.tours = toursFiltered
+    }
   },
 
   add({ travels }, value) {
@@ -66,9 +77,15 @@ export const mutations = {
   addTour({ travels }, value) {
     const { entity } = travels
 
+    // prevent get undefined on first travel creation
+    if (!entity.tours) {
+      entity.tours = []
+    }
+
     entity.tours.push(value)
 
-    travels.entity = entity
+    // prevent passing the Proxy object reference
+    travels.entity = { ...entity }
   },
 
   delete({ travels }, value) {
@@ -158,5 +175,9 @@ export const actions = {
 
     commit('addTour', tour)
     commit('setLoading', false)
+  },
+
+  clearEntity({ commit }) {
+    commit('setEntity', {})
   }
 }

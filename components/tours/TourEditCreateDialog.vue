@@ -206,8 +206,13 @@ export default {
 
   watch: {
     tour(newValue) {
+      console.log(newValue)
       this.payload = { ...newValue }
     }
+  },
+
+  mounted() {
+    this.payload = {}
   },
 
   methods: {
