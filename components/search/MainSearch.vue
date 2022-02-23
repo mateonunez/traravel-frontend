@@ -133,13 +133,13 @@ export default {
 
   computed: {
     results() {
-      return this.$store.getters['travels/getResults']
+      return this.$store.getters['travels/getResults'].slice(0, 5)
     }
   },
 
   watch: {
     query(newQuery) {
-      if (newQuery) {
+      if (newQuery && !this.searching) {
         this.search(newQuery)
       } else if (!newQuery || newQuery.length === 0) {
         this.resetQuery()
@@ -188,7 +188,7 @@ export default {
         await this.sleep(1000)
         this.focused = true
 
-        await this.$store.dispatch('travels/search', this.query)
+        this.$store.dispatch('travels/search', this.query)
 
         // prevent animation collision
         await this.sleep(1000)
@@ -207,9 +207,9 @@ export default {
   }
 }
 
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 768px) {
   .focused {
-    width: calc(100vw - 32rem);
+    width: calc(100vw - 20rem);
   }
 }
 </style>
