@@ -119,8 +119,8 @@
                   @click="
                     openTourDialog({
                       ...tour,
-                      index, // index of the tour in the travel not pushed yet
-                      travelId: travel.id
+                      travelId: travel.id,
+                      index // index of the tour in the travel not pushed yet
                     })
                   "
                 >
@@ -271,11 +271,7 @@ export default {
     cn,
 
     openTourDialog(tour) {
-      if (!tour) {
-        this.tourEntity = null
-      } else {
-        this.tourEntity = { ...tour }
-      }
+      this.tourEntity = tour === undefined ? undefined : { ...tour }
 
       this.$refs.tourEditCreateDialog.show()
     },
@@ -320,7 +316,6 @@ export default {
 
     async updateTour(payload) {
       try {
-        console.log(payload)
         if (this.isCreating) {
           await this.$store.commit('travels/updateTour', payload)
         } else {
@@ -347,9 +342,28 @@ export default {
         ...this.payload
       }
 
-      console.log(payload)
+      this.buttonDisabled = true
+      this.loading = true
+      try {
+        await this.$store.dispatch('travels/store', payload)
 
-      await Promise.resolve(true)
+        this.loading = false
+        this.buttonDisabled = false
+
+        this.$store.dispatch('ui/showMessage', {
+          message: 'Travel creato con successo'
+        })
+
+        this.$router.push('/travels')
+      } catch ({ response }) {
+        const {
+          data: { message }
+        } = response
+
+        this.loading = false
+        this.buttonDisabled = false
+        this.$store.dispatch('ui/showError', { message })
+      }
     },
 
     async storeTour(payload) {

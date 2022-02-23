@@ -206,8 +206,9 @@ export default {
 
   watch: {
     tour(newValue) {
-      console.log(newValue)
-      this.payload = { ...newValue }
+      if (newValue) {
+        this.payload = newValue ? { ...newValue } : {}
+      }
     }
   },
 
@@ -222,6 +223,7 @@ export default {
     },
     hide() {
       this.isVisible = false
+      this.payload = {}
     },
     validate() {
       this.errors = []
