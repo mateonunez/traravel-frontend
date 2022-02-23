@@ -72,8 +72,8 @@
         >
           <!-- Tours -->
           <div
-            v-for="tour in travel.tours"
-            :key="tour.id"
+            v-for="(tour, index) in travel.tours"
+            :key="index"
             class="flex flex-row items-center justify-start p-3 my-2"
           >
             <div class="flex flex-col w-40">
@@ -119,7 +119,8 @@
                   @click="
                     openTourDialog({
                       ...tour,
-                      travelId: travel.id
+                      travelId: travel.id,
+                      index // index of the tour in the travel not pushed yet
                     })
                   "
                 >
@@ -128,6 +129,7 @@
                 <button
                   type="button"
                   class="self-end text-red-500 hover:text-red-700"
+                  @click="destroy"
                 >
                   Elimina
                 </button>
@@ -137,7 +139,7 @@
 
           <div
             title="Aggiungi un nuovo Tour"
-            class="flex flex-row items-center justify-center w-full py-2 mt-4 text-red-900 bg-red-100 rounded-b-lg cursor-pointer hover:bg-red-900 hover:text-red-100"
+            class="flex flex-row items-center justify-center w-full py-2 text-red-900 bg-red-100 rounded-lg cursor-pointer hover:bg-red-900 hover:text-red-100"
             @click="openTourDialog()"
           >
             <button type="button">
@@ -146,7 +148,6 @@
           </div>
 
           <!-- TODO Moods -->
-          <!-- isPublic is missing -->
         </div>
       </div>
 
@@ -234,22 +235,26 @@ export default {
     tourEntity: null,
     loading: false,
     buttonDisabled: false,
-    isSlugEditable: false
+    isSlugEditable: false,
+    travelToursKey: 0
   }),
 
   computed: {
     isEditing() {
-      return !!this.travel
+      return !this.travel
     },
     isCreating() {
       return !this.isEditing
+    },
+    travelEntity() {
+      return this.$store.getters['travels/getEntity']
     }
   },
 
   watch: {
     travel(newValue) {
       if (newValue) {
-        this.payload = { ...newValue }
+        this.payload = { ...this.payload, ...newValue }
       }
     },
     'payload.name'(newValue) {
@@ -267,16 +272,9 @@ export default {
     cn,
 
     openTourDialog(tour) {
-      if (!tour) {
-        this.tourEntity = null
-      } else {
-        this.tourEntity = { ...tour }
-      }
-      this.$refs.tourEditCreateDialog.show()
-    },
+      this.tourEntity = tour === undefined ? undefined : { ...tour }
 
-    preparePayload() {
-      return this.payload
+      this.$refs.tourEditCreateDialog.show()
     },
 
     handleSubmit(e) {
@@ -290,7 +288,7 @@ export default {
     },
 
     async update() {
-      const payload = this.preparePayload()
+      const payload = this.payload()
 
       this.buttonDisabled = true
       this.loading = true
@@ -319,7 +317,11 @@ export default {
 
     async updateTour(payload) {
       try {
-        await this.$store.dispatch('travels/updateTour', payload)
+        if (this.isCreating) {
+          await this.$store.commit('travels/updateTour', payload)
+        } else {
+          await this.$store.dispatch('travels/updateTour', payload)
+        }
 
         this.$store.dispatch('ui/showMessage', {
           message: 'Travel modificato con successo'
@@ -335,21 +337,60 @@ export default {
       }
     },
 
-    async storeTour(payload) {
+    async store() {
+      const payload = {
+        ...this.travel,
+        ...this.payload
+      }
+
+      this.buttonDisabled = true
+      this.loading = true
       try {
-        await this.$store.dispatch('travels/storeTour', {
-          ...payload,
-          travelId: this.travel.id
-        })
+        await this.$store.dispatch('travels/store', payload)
+
+        this.loading = false
+        this.buttonDisabled = false
 
         this.$store.dispatch('ui/showMessage', {
           message: 'Travel creato con successo'
+        })
+
+        this.$router.push('/travels')
+      } catch ({ response }) {
+        const {
+          data: { message }
+        } = response
+
+        this.loading = false
+        this.buttonDisabled = false
+        this.$store.dispatch('ui/showError', { message })
+      }
+    },
+
+    async storeTour(payload) {
+      try {
+        // prevent when creating a travel and we dont have an id
+        if (this.isCreating) {
+          await this.$store.commit('travels/addTour', payload)
+        } else {
+          await this.$store.dispatch('travels/storeTour', {
+            ...payload,
+            travelId: this.travel.id
+          })
+        }
+
+        this.$store.dispatch('ui/showMessage', {
+          message: 'Tour creato con successo'
         })
 
         this.$refs.tourEditCreateDialog.hide()
       } catch (e) {
         console.error(e)
       }
+    },
+
+    destroy() {
+      console.warn('Not implemented yet, sorry!')
     }
   }
 }

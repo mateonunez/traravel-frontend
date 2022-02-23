@@ -206,8 +206,14 @@ export default {
 
   watch: {
     tour(newValue) {
-      this.payload = { ...newValue }
+      if (newValue) {
+        this.payload = newValue ? { ...newValue } : {}
+      }
     }
+  },
+
+  mounted() {
+    this.payload = {}
   },
 
   methods: {
@@ -217,6 +223,7 @@ export default {
     },
     hide() {
       this.isVisible = false
+      this.payload = {}
     },
     validate() {
       this.errors = []

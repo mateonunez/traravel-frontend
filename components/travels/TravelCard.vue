@@ -223,7 +223,8 @@ export default {
         : this.$router.push(`/travels/${this.slug}/book`)
     },
     handleSecondaryButtonClick() {
-      this.$emit('secondary-button-click')
+      // this.$emit('secondary-button-click')
+      console.warn('Not implemented yet, sorry!')
     }
   }
 }

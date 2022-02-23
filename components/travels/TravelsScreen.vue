@@ -25,7 +25,7 @@
       </div>
 
       <!-- Add new -->
-      <div class="flex flex-row justify-center mt-4 ml-auto">
+      <div v-if="imAdmin" class="flex flex-row justify-center mt-4 ml-auto">
         <button
           class="w-full px-4 py-2 mr-2 text-sm font-bold bg-red-500 rounded-md text-slate-100"
           @click="$router.push('/travels/create')"
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'TravelsScreen',
 
@@ -67,6 +68,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['imAdmin']),
+
     travels() {
       return this.$store.getters['travels/get']
     }

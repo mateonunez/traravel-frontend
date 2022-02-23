@@ -46,12 +46,15 @@ export const mutations = {
   },
 
   updateTour({ travels }, value) {
+    // filtering by id if tours are stored and fetched or
+    // by value if tours are not stored in db yet
+    const key = value.index !== undefined ? 'index' : 'id'
+
     const toursFiltered = travels.entity.tours?.filter(
-      tour => tour.id !== value.id
+      tour => tour[key] !== value[key]
     )
 
     toursFiltered.push(value)
-
     travels.entity.tours = toursFiltered
   },
 
@@ -66,9 +69,18 @@ export const mutations = {
   addTour({ travels }, value) {
     const { entity } = travels
 
-    entity.tours.push(value)
+    // prevent get undefined on first travel creation
+    if (!entity.tours) {
+      entity.tours = []
+    }
 
-    travels.entity = entity
+    // computing the index to allow filtering on updateToure in create mode
+    const index = entity.tours.length
+
+    entity.tours.push({ ...value, index })
+
+    // prevent passing the Proxy object reference
+    travels.entity = { ...entity }
   },
 
   delete({ travels }, value) {
@@ -147,6 +159,20 @@ export const actions = {
     commit('setLoading', false)
   },
 
+  async store({ commit }, payload) {
+    commit('setLoading', true)
+
+    const response = await this.$axios.post('/travels', payload)
+
+    const {
+      data: { data: travel = {} }
+    } = response
+
+    commit('add', travel)
+    commit('setFetched', true)
+    commit('setLoading', false)
+  },
+
   async storeTour({ commit }, payload) {
     commit('setLoading', true)
 
@@ -158,5 +184,9 @@ export const actions = {
 
     commit('addTour', tour)
     commit('setLoading', false)
+  },
+
+  clearEntity({ commit }) {
+    commit('setEntity', {})
   }
 }
