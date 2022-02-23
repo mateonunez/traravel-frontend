@@ -192,4 +192,45 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+/* Changing default Vue Hotel Picker style */
+.vhd__datepicker__wrapper {
+  background: #fff url('~/assets/icons/calendar.svg') no-repeat 1em/1em !important;
+}
+
+.vhd__datepicker__month-button {
+  background: #fff url('~/assets/icons/chevron.svg') no-repeat 0.5em/1.5em !important;
+}
+
+.vhd__datepicker__dummy-wrapper--is-active {
+  border: 1px solid #f97317 !important;
+}
+
+.vhd__datepicker__month-button {
+  border: 1px solid #f97317 !important;
+}
+
+.vhd__datepicker__month-day--today .vhd__datepicker__month-day-wrapper {
+  border: 2px solid #f97317 !important;
+}
+.vhd__datepicker__month-day--valid:hover {
+  background-color: #f97317 !important;
+}
+.vhd__datepicker__month-day--last-day-selected {
+  background: #f97317 !important;
+}
+
+.vhd__datepicker__month-day--selected:hover {
+  font-weight: 700;
+  background-color: #f97317;
+}
+
+.vhd__datepicker__month-day--selected {
+  background-color: rgb(249 115 23 / 70%);
+}
+
+.vhd__datepicker__month-day--first-day-selected,
+.vhd__datepicker__month-day--last-day-selected {
+  background-color: #f97317 !important;
+}
+</style>
