@@ -41,7 +41,7 @@ export const actions = {
     commit('setMessage', message || '')
     commit('setShow', true)
 
-    console.log(message)
+    console.error(message)
   },
   showMessage(
     { commit },
@@ -51,5 +51,7 @@ export const actions = {
     commit('setTitle', title || 'Successo')
     commit('setMessage', message || '')
     commit('setShow', true)
+
+    console.log(message)
   }
 }
