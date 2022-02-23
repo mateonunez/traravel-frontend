@@ -37,12 +37,19 @@ export const mutations = {
   /** Custom methods */
   update({ travels }, value) {
     const travelsFiltered = travels.data.filter(
-      travels => travels.id !== value.id
+      travel => travel.id !== value.id
     )
 
     travelsFiltered.push(value)
 
     travels.data = travels
+  },
+  updateTour({ travels }, { id, travelId, tour }) {
+    const toursFiltered = travels.entity.tours?.filter(tour => tour.id !== id)
+
+    toursFiltered.push(tour)
+
+    travels.entity.tours = toursFiltered
   },
   add({ travels }, value) {
     const { data } = travels
@@ -110,8 +117,22 @@ export const actions = {
     } = response
 
     commit('update', travel)
-    // commit('setEntity', travel)
     commit('setFetched', true)
+    commit('setLoading', false)
+  },
+
+  async updateTour({ commit }, { id, travelId, payload }) {
+    commit('setLoading', true)
+
+    const response = await this.$axios.put(`/tours/${id}`, payload)
+
+    console.log(response)
+
+    const {
+      data: { data: tour = {} }
+    } = response
+
+    commit('updateTour', { id, travelId, tour })
     commit('setLoading', false)
   }
 }

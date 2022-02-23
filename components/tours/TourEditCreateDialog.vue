@@ -13,7 +13,7 @@
       </span>
 
       <div
-        class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle w-[95vw]"
+        class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle w-[95vw] xl:w-[70vw]"
       >
         <div class="p-5 bg-white sm:p-6">
           <div class="flex flex-col h-full">
@@ -242,7 +242,6 @@ export default {
       }
 
       const payload = { ...this.payload }
-      console.log(payload)
 
       if (this.isEditing) {
         this.$emit('update', payload)
@@ -251,8 +250,8 @@ export default {
       }
     },
     handlePeriodSelected(_, startDate, endDate) {
-      this.payload.startingDate = startDate.toUTCString()
-      this.payload.endingDate = endDate.toUTCString()
+      this.payload.startingDate = startDate.toISOString()
+      this.payload.endingDate = endDate.toISOString()
     }
   }
 }

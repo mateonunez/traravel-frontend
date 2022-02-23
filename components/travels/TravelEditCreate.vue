@@ -1,6 +1,9 @@
 <template>
   <div class="w-full h-full px-6 py-5 text-white bg-red-500 bg-opacity-90">
-    <form class="flex flex-col my-8 md:w-2/3 md:mx-auto" @submit="handleSubmit">
+    <form
+      class="flex flex-col my-8 md:w-2/3 xl:w-1/3 md:mx-auto"
+      @submit="handleSubmit"
+    >
       <!-- Name input -->
       <div class="relative mb-5">
         <span class="font-bold">Nome</span>
@@ -9,11 +12,7 @@
             v-model="payload.name"
             type="text"
             placeholder="Nome"
-            :class="
-              cn(
-                'w-full appearance-none text-slate-900 py-2 pl-12 pr-2 transition ease-in-out border border-solid rounded-lg focus:border-blue-500 focus:outline-none'
-              )
-            "
+            class="w-full py-2 pl-12 pr-2 transition ease-in-out border border-solid rounded-lg appearance-none text-slate-900 focus:border-blue-500 focus:outline-none"
           />
         </label>
         <LocationIcon
@@ -31,11 +30,7 @@
               type="text"
               placeholder="Slug"
               :disabled="!isSlugEditable"
-              :class="
-                cn(
-                  'w-full appearance-none disabled:bg-gray-300 text-slate-900 py-2 pl-12 pr-2 transition ease-in-out border border-solid rounded-lg focus:border-blue-500 focus:outline-none'
-                )
-              "
+              class="w-full py-2 pl-12 pr-2 transition ease-in-out border border-solid rounded-lg appearance-none disabled:bg-gray-300 text-slate-900 focus:border-blue-500 focus:outline-none"
             />
           </label>
           <LinkIcon
@@ -62,11 +57,7 @@
             type="text"
             placeholder="Slug"
             rows="8"
-            :class="
-              cn(
-                'w-full appearance-none text-slate-900 p-3 transition ease-in-out border border-solid rounded-lg focus:border-blue-500 focus:outline-none'
-              )
-            "
+            class="w-full p-3 transition ease-in-out border border-solid rounded-lg appearance-none text-slate-900 focus:border-blue-500 focus:outline-none"
           />
         </label>
       </div>
@@ -199,7 +190,11 @@
       </div>
     </form>
 
-    <TourEditCreateDialog ref="tourEditCreateDialog" :tour="tourEntity" />
+    <TourEditCreateDialog
+      ref="tourEditCreateDialog"
+      :tour="tourEntity"
+      @update="updateTour"
+    />
   </div>
 </template>
 
@@ -269,6 +264,7 @@ export default {
 
   methods: {
     cn,
+
     openTourDialog(tour) {
       if (!tour) {
         this.tourEntity = null
@@ -277,19 +273,22 @@ export default {
       }
       this.$refs.tourEditCreateDialog.show()
     },
+
     preparePayload() {
       return this.payload
     },
+
     handleSubmit(e) {
       e.preventDefault()
 
       if (this.isEditing) {
-        this.edit()
+        this.update()
       } else {
-        this.create()
+        this.store()
       }
     },
-    async edit() {
+
+    async update() {
       const payload = this.preparePayload()
 
       this.buttonDisabled = true
@@ -319,7 +318,30 @@ export default {
         this.$store.dispatch('ui/showError', { message })
       }
     },
-    async create() {
+
+    async updateTour(payload) {
+      try {
+        await this.$store.dispatch('travels/updateTour', {
+          id: payload.id,
+          travelId: this.travel.id,
+          payload
+        })
+
+        this.$store.dispatch('ui/showMessage', {
+          message: 'Travel modificato con successo'
+        })
+
+        this.$refs.tourEditCreateDialog.hide()
+      } catch ({ response }) {
+        const {
+          data: { message }
+        } = response
+
+        this.$store.dispatch('ui/showError', { message })
+      }
+    },
+
+    async store() {
       await Promise.resolve(true)
     }
   }
