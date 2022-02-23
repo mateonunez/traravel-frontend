@@ -129,6 +129,7 @@
                 <button
                   type="button"
                   class="self-end text-red-500 hover:text-red-700"
+                  @click="destroy"
                 >
                   Elimina
                 </button>
@@ -386,6 +387,10 @@ export default {
       } catch (e) {
         console.error(e)
       }
+    },
+
+    destroy() {
+      console.warn('Not implemented yet, sorry!')
     }
   }
 }
