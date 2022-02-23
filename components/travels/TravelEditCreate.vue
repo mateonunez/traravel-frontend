@@ -125,7 +125,12 @@
                 <button
                   type="button"
                   class="self-end text-amber-500 hover:text-amber-700"
-                  @click="openTourDialog(tour)"
+                  @click="
+                    openTourDialog({
+                      ...tour,
+                      travelId: travel.id
+                    })
+                  "
                 >
                   Modifica
                 </button>
