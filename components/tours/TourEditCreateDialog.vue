@@ -246,7 +246,7 @@ export default {
       if (this.isEditing) {
         this.$emit('update', payload)
       } else {
-        this.$emit('create', payload)
+        this.$emit('store', payload)
       }
     },
     handlePeriodSelected(_, startDate, endDate) {

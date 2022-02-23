@@ -194,6 +194,7 @@
       ref="tourEditCreateDialog"
       :tour="tourEntity"
       @update="updateTour"
+      @store="storeTour"
     />
   </div>
 </template>
@@ -295,10 +296,7 @@ export default {
       this.loading = true
 
       try {
-        await this.$store.dispatch('travels/update', {
-          id: this.travel.id,
-          payload
-        })
+        await this.$store.dispatch('travels/update', payload)
 
         this.loading = false
         this.buttonDisabled = false
@@ -321,11 +319,7 @@ export default {
 
     async updateTour(payload) {
       try {
-        await this.$store.dispatch('travels/updateTour', {
-          id: payload.id,
-          travelId: this.travel.id,
-          payload
-        })
+        await this.$store.dispatch('travels/updateTour', payload)
 
         this.$store.dispatch('ui/showMessage', {
           message: 'Travel modificato con successo'
@@ -341,8 +335,21 @@ export default {
       }
     },
 
-    async store() {
-      await Promise.resolve(true)
+    async storeTour(payload) {
+      try {
+        await this.$store.dispatch('travels/storeTour', {
+          ...payload,
+          travelId: this.travel.id
+        })
+
+        this.$store.dispatch('ui/showMessage', {
+          message: 'Travel creato con successo'
+        })
+
+        this.$refs.tourEditCreateDialog.hide()
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 }

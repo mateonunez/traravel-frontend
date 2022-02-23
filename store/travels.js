@@ -44,13 +44,17 @@ export const mutations = {
 
     travels.data = travels
   },
-  updateTour({ travels }, { id, travelId, tour }) {
-    const toursFiltered = travels.entity.tours?.filter(tour => tour.id !== id)
 
-    toursFiltered.push(tour)
+  updateTour({ travels }, value) {
+    const toursFiltered = travels.entity.tours?.filter(
+      tour => tour.id !== value.id
+    )
+
+    toursFiltered.push(value)
 
     travels.entity.tours = toursFiltered
   },
+
   add({ travels }, value) {
     const { data } = travels
 
@@ -58,6 +62,15 @@ export const mutations = {
 
     travels.data = data
   },
+
+  addTour({ travels }, value) {
+    const { entity } = travels
+
+    entity.tours.push(value)
+
+    travels.entity = entity
+  },
+
   delete({ travels }, value) {
     const travelsFiltered = travels.data.filter(travel => travel.id !== value)
 
@@ -107,10 +120,10 @@ export const actions = {
     commit('setResults', travels)
   },
 
-  async update({ commit }, { id, payload }) {
+  async update({ commit }, payload) {
     commit('setLoading', true)
 
-    const response = await this.$axios.put(`/travels/${id}`, payload)
+    const response = await this.$axios.put(`/travels/${payload.id}`, payload)
 
     const {
       data: { data: travel = {} }
@@ -121,18 +134,29 @@ export const actions = {
     commit('setLoading', false)
   },
 
-  async updateTour({ commit }, { id, travelId, payload }) {
+  async updateTour({ commit }, payload) {
     commit('setLoading', true)
 
-    const response = await this.$axios.put(`/tours/${id}`, payload)
-
-    console.log(response)
+    const response = await this.$axios.put(`/tours/${payload.id}`, payload)
 
     const {
       data: { data: tour = {} }
     } = response
 
-    commit('updateTour', { id, travelId, tour })
+    commit('updateTour', tour)
+    commit('setLoading', false)
+  },
+
+  async storeTour({ commit }, payload) {
+    commit('setLoading', true)
+
+    const resposne = await this.$axios.post(`/tours`, payload)
+
+    const {
+      data: { data: tour = {} }
+    } = resposne
+
+    commit('addTour', tour)
     commit('setLoading', false)
   }
 }

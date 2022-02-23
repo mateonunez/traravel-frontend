@@ -70,10 +70,6 @@ export default {
     travels() {
       return this.$store.getters['travels/get']
     }
-  },
-
-  mounted() {
-    console.log(this.travels)
   }
 }
 </script>
