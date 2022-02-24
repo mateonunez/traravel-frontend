@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-row items-center justify-around w-full mb-2 transform border-0 rounded-lg"
+    class="flex flex-row items-center justify-around w-full my-2 transform border-0 rounded-lg"
   >
     <div class="flex flex-row">
       <div
@@ -66,8 +66,10 @@ export default {
       this.searcheableEntity = searcheableOptions.ALL
     },
     handleSearch(entity) {
-      this.searcheableEntity = entity
-      this.$emit('search', this.searcheableEntity)
+      if (this.searcheableEntity !== entity) {
+        this.searcheableEntity = entity
+        this.$emit('search', this.searcheableEntity)
+      }
     }
   }
 }
