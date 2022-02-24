@@ -62,10 +62,6 @@ export default {
     travel() {
       return this.$store.getters['travels/getEntity']
     }
-  },
-
-  mounted() {
-    console.log(this.travel)
   }
 }
 </script>
