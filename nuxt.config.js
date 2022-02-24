@@ -34,6 +34,11 @@ export default {
     '@nuxt/postcss8'
   ],
 
+  // Server config
+  server: {
+    port: process.env.PORT || 3000
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
@@ -44,7 +49,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseUrl: 'http://localhost:8000/api'
+    baseUrl: process.env.API_URL || 'http://localhost:8000/api'
   },
 
   auth: {
