@@ -76,65 +76,14 @@
             :key="index"
             class="flex flex-row items-center justify-start p-3 my-2"
           >
-            <div class="flex flex-col w-40">
-              <!-- Image -->
-              <img
-                src="https://via.placeholder.com/100"
-                :alt="tour.name"
-                class="object-cover w-20 h-20 rounded-xl"
-              />
-            </div>
-
-            <!-- Details -->
-            <div class="flex flex-col justify-center w-full mx-4">
-              <div class="flex flex-row">
-                <span class="text-lg font-bold">{{ tour.name }}</span>
-              </div>
-              <!-- Startaing Date -->
-              <div class="flex flex-row">
-                <span class="text-sm text-slate-800">
-                  <b>Data di inizio:</b>
-                  {{ tour.startingDate | dateForHumans }}
-                </span>
-              </div>
-              <div class="flex flex-row">
-                <span class="text-sm text-slate-800">
-                  <b>Data di fine:</b>
-                  {{ tour.endingDate | dateForHumans }}
-                </span>
-              </div>
-              <div class="flex flex-row">
-                <span class="text-xs text-slate-600">
-                  {{ tour.price | currencyForHumans }}
-                </span>
-              </div>
-
-              <!-- Actions -->
-              <div
-                class="flex flex-row justify-between w-1/2 mt-2 text-xs md:w-1/3"
-              >
-                <button
-                  type="button"
-                  class="self-end text-amber-500 hover:text-amber-700"
-                  @click="
-                    openTourDialog({
-                      ...tour,
-                      travelId: travel.id,
-                      index // index of the tour in the travel not pushed yet
-                    })
-                  "
-                >
-                  Modifica
-                </button>
-                <button
-                  type="button"
-                  class="self-end text-red-500 hover:text-red-700"
-                  @click="destroy"
-                >
-                  Elimina
-                </button>
-              </div>
-            </div>
+            <TourCard
+              editable
+              :tour="tour"
+              :travel="travel"
+              :index="index"
+              @update="openTourDialog"
+              @destroy="destroy"
+            />
           </div>
 
           <div
@@ -220,7 +169,8 @@ export default {
     PlusIcon: () => import('~/components/icons/Plus'),
     Spinner: () => import('~/components/ui/Spinner'),
     TourEditCreateDialog: () =>
-      import('~/components/tours/TourEditCreateDialog')
+      import('~/components/tours/TourEditCreateDialog'),
+    TourCard: () => import('~/components/tours/TourCard')
   },
 
   props: {
