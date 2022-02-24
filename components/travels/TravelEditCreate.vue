@@ -241,7 +241,7 @@ export default {
 
   computed: {
     isEditing() {
-      return !this.travel
+      return !this.travel || !!this.travel?.id
     },
     isCreating() {
       return !this.isEditing
@@ -288,7 +288,7 @@ export default {
     },
 
     async update() {
-      const payload = this.payload()
+      const payload = this.payload
 
       this.buttonDisabled = true
       this.loading = true
