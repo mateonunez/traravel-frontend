@@ -16,8 +16,8 @@
         type="text"
         :class="
           cn(
-            'flex self-center w-full h-16 px-12 text-xl transition duration-1000 transform border shadow-lg  focus:outline-none',
-            focused ? 'rounded-t-lg' : 'rounded-lg'
+            'flex self-center w-full h-16 px-12 text-xl transition duration-1000 transform shadow-xl focus:outline-none',
+            focused ? 'rounded-t-lg border-x border-t' : 'border rounded-lg'
           )
         "
       />
@@ -46,7 +46,7 @@
         :class="
           cn(
             'w-full bg-white border rounded-b-lg transition transform duration-1000 ease-in-out',
-            focused ? 'opacity-100' : 'opacity-0'
+            focused ? 'opacity-100 border-t-0' : 'opacity-0'
           )
         "
       >
@@ -54,43 +54,57 @@
         <div
           :class="
             cn(
-              'flex flex-col my-8 mx-12 transition duration-300 transform opacity-100 ease-in-out',
+              'flex flex-col transition duration-300 transform opacity-100 ease-in-out',
               searching ? 'opacity-0' : 'opacity-100'
             )
           "
         >
-          <!-- Single result -->
+          <!-- Settings -->
           <div
-            v-for="travel in results"
-            :key="travel.id"
-            class="flex flex-row items-center w-full my-2 transition duration-300 ease-linear transform rounded-lg cursor-pointer hover:scale-105 hover:bg-gray-50"
-            :title="`${travel.description.substring(0, 140)}...`"
-            @click="$router.push(`/travels/${travel.slug}`)"
+            class="flex flex-row items-center justify-between w-full mb-4 transition duration-300 ease-linear transform rounded-lg"
           >
-            <div class="flex flex-col">
-              <img
-                src="https://via.placeholder.com/100"
-                alt="tour.name"
-                class="object-cover w-16 h-16 rounded-xl"
-              />
+            <div class="flex flex-row ml-4">
+              <div class="flex flex-col">C</div>
+              <div class="flex flex-col">B</div>
             </div>
-            <div class="flex flex-col justify-center ml-4">
-              <div class="flex flex-row">
-                <div class="flex flex-col justify-center">
-                  <span class="font-bold">{{ travel.name }}</span>
-                </div>
-                <div class="flex flex-col"></div>
+            <div class="flex flex-col mr-4">B</div>
+          </div>
+
+          <div class="mx-12 mt-8">
+            <!-- Single result -->
+            <div
+              v-for="travel in results"
+              :key="travel.id"
+              class="flex flex-row items-center w-full my-2 transition duration-300 ease-linear transform rounded-lg cursor-pointer hover:scale-105 hover:bg-gray-50"
+              :title="`${travel.description.substring(0, 140)}...`"
+              @click="$router.push(`/travels/${travel.slug}`)"
+            >
+              <div class="flex flex-col">
+                <img
+                  src="https://via.placeholder.com/100"
+                  alt="tour.name"
+                  class="object-cover w-16 h-16 rounded-xl"
+                />
               </div>
-              <div class="flex flex-row items-center">
-                <div class="flex flex-col">
-                  <span class="text-sm">
-                    {{ computeTravelPrice(travel.tours) | currencyForHumans }}
-                  </span>
+              <div class="flex flex-col justify-center ml-4">
+                <div class="flex flex-row">
+                  <div class="flex flex-col justify-center">
+                    <span class="font-bold">{{ travel.name }}</span>
+                  </div>
+                  <div class="flex flex-col"></div>
                 </div>
-                <div class="flex flex-col ml-2">
-                  <span class="text-xs text-slate-600">
-                    {{ travel.numberOfDays }}☀️ / {{ travel.numberOfNights }}🌑
-                  </span>
+                <div class="flex flex-row items-center">
+                  <div class="flex flex-col">
+                    <span class="text-sm">
+                      {{ computeTravelPrice(travel.tours) | currencyForHumans }}
+                    </span>
+                  </div>
+                  <div class="flex flex-col ml-2">
+                    <span class="text-xs text-slate-600">
+                      {{ travel.numberOfDays }}☀️ /
+                      {{ travel.numberOfNights }}🌑
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -183,15 +197,13 @@ export default {
     },
     async search() {
       try {
-        // real search engine feedback :D
         this.searching = true
-        await this.sleep(1000)
+        await this.sleep(500)
         this.focused = true
 
-        this.$store.dispatch('travels/search', this.query)
+        await this.$store.dispatch('travels/search', this.query)
 
-        // prevent animation collision
-        await this.sleep(1000)
+        await this.sleep(500)
         this.searching = false
       } catch (e) {
         console.error(e)
