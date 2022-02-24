@@ -15,8 +15,7 @@
     <div class="block full-height full-width">
       <img
         :src="
-          backgroundImage !== null &&
-          require(`~/assets/images/background/${backgroundImage}`)
+          backgroundImage !== null && `/images/background/${backgroundImage}`
         "
         alt=""
         aria-disabled="true"

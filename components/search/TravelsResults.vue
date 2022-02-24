@@ -7,14 +7,14 @@
       :title="`${travel.description.substring(0, 140)}...`"
       @click="$router.push(`/travels/${travel.slug}`)"
     >
-      <div class="flex flex-col">
+      <div class="flex flex-col w-1/3 lg:items-end">
         <img
           src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=150&q=80"
           alt="tour.name"
           class="object-cover w-16 h-16 rounded-xl"
         />
       </div>
-      <div class="flex flex-col justify-center ml-4">
+      <div class="flex flex-col justify-center w-2/3 ml-4">
         <div class="flex flex-row">
           <div class="flex flex-col justify-center">
             <span class="font-bold">{{ travel.name }}</span>
