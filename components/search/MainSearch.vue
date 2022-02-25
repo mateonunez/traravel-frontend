@@ -4,12 +4,14 @@
       :class="
         cn(
           'ease-in-out transition-all duration-1000 transform',
-          focused ? '-translate-y-6 focused' : 'translate-y-1/2 w-96'
+          focused
+            ? 'md:-translate-y-6 translate-y-4 focused'
+            : 'translate-y-1/2 md:w-96 w-72'
         )
       "
     >
       <!-- Input -->
-      <div>
+      <div ref="mainInput">
         <input
           ref="queryRef"
           v-model="query"
@@ -17,7 +19,7 @@
           type="text"
           :class="
             cn(
-              'flex self-center w-full h-16 px-12 text-xl transition duration-1000 transform shadow-xl focus:outline-none',
+              'flex self-center w-full h-16 px-12 text-xl transition duration-1000 transform shadow-xl focus:outline-none -mt-16',
               focused ? 'rounded-t-lg border-x border-t' : ' rounded-lg'
             )
           "
@@ -75,7 +77,9 @@
           </div>
 
           <!-- Single travel result -->
-          <div class="px-12 mt-8 overflow-x-hidden overflow-y-scroll max-h-96">
+          <div
+            class="px-12 mt-8 overflow-x-hidden overflow-y-scroll md:max-h-96 max-h-64"
+          >
             <TravelsResults :travels="travelsResults" />
             <ToursResults :tours="toursResults" />
             <UsersResults :users="usersResults" />
