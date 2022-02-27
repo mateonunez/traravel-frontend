@@ -24,6 +24,6 @@
 
 <script>
 export default {
-  name: 'Cross'
+  name: 'ArrowRight'
 }
 </script>
