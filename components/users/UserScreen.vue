@@ -1,12 +1,12 @@
 <template>
-  <div class="flex flex-col py-8 mt-10">
+  <div class="flex flex-col py-8 mt-10 sm:mx-auto md:w-1/2">
     <!-- Title  -->
-    <div class="flex flex-col mx-8 sm:mx-auto md:w-1/2">
+    <div class="flex flex-col">
       <h1 class="text-2xl font-bold leading-none text-slate-800">Users</h1>
     </div>
 
     <!-- Add new -->
-    <div v-if="imAdmin" class="flex flex-row justify-center mx-8 mb-2 ml-auto">
+    <div v-if="imAdmin" class="flex flex-row self-end">
       <button
         class="w-full px-4 py-2 mr-2 text-sm font-bold text-red-500 rounded-md"
         @click="$router.push('/users/create')"
