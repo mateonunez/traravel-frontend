@@ -1,37 +1,39 @@
 <template>
-  <div>
+  <div class="">
     <div
       v-for="travel in travels"
       :key="travel.id"
-      class="flex flex-row items-center w-full mt-2 mb-4 transition duration-300 ease-linear transform rounded-lg cursor-pointer hover:scale-105 hover:bg-gray-50"
+      class="flex flex-col items-center w-full mt-2 mb-4 transition duration-300 ease-linear transform rounded-lg cursor-pointer md:flex-row hover:scale-105 hover:bg-gray-50"
       :title="`${travel.description.substring(0, 140)}...`"
       @click="$router.push(`/travels/${travel.slug}`)"
     >
-      <div class="flex flex-col w-1/3 lg:items-end">
+      <!-- Image -->
+      <div class="flex flex-col my-1 sm:flex-row lg:items-end">
         <img
           src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=150&q=80"
           alt="tour.name"
           class="object-cover w-16 h-16 rounded-xl"
         />
       </div>
-      <div class="flex flex-col justify-center w-2/3 ml-4">
-        <div class="flex flex-row">
-          <div class="flex flex-col justify-center">
-            <span class="font-bold">{{ travel.name }}</span>
-          </div>
-          <div class="flex flex-col"></div>
-        </div>
-        <div class="flex flex-row items-center">
-          <div class="flex flex-col">
-            <!-- <span class="text-sm">
-                      {{ computeTravelPrice(travel) | currencyForHumans }}
-                    </span> -->
-          </div>
-          <div class="flex flex-col ml-2">
-            <span class="text-xs text-slate-600">
-              {{ travel.numberOfDays }}☀️ / {{ travel.numberOfNights }}🌑
-            </span>
-          </div>
+
+      <!-- Name -->
+      <div
+        class="flex flex-col items-center my-1 text-center md:ml-4 sm:flex-row"
+      >
+        <span class="font-bold md:text-left">{{ travel.name }}</span>
+        <span class="text-xs text-slate-600 md:ml-2">
+          {{ travel.numberOfDays }}☀️ / {{ travel.numberOfNights }}🌑
+        </span>
+      </div>
+
+      <!-- Tag -->
+      <div
+        class="flex flex-col items-center justify-center mx-auto my:1 md:ml-auto md:mr-2"
+      >
+        <div
+          class="flex justify-center items-center px-1 py-1 text-xs font-bold text-green-700 uppercase bg-green-200 rounded-full text-[7px] leading-sm w-20 text-center"
+        >
+          Team Choice
         </div>
       </div>
     </div>
@@ -40,6 +42,7 @@
 
 <script>
 import { currencyForHumans } from '~/lib/filters/currency'
+
 export default {
   name: 'TravelsResults',
 
