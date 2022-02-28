@@ -42,7 +42,7 @@
         <span class="font-bold">Password</span>
         <label>
           <input
-            v-model="password"
+            v-model="payload.password"
             type="password"
             placeholder="Inserisci la password"
             class="w-full py-2 pl-12 pr-2 transition ease-in-out border border-solid rounded-lg focus:border-blue-500 focus:outline-none"
@@ -54,11 +54,11 @@
       </div>
 
       <!-- Confirm Password -->
-      <div class="relative mb-5">
+      <div v-if="!isEditing" class="relative mb-5">
         <span class="font-bold">Conferma Password</span>
         <label>
           <input
-            v-model="password"
+            v-model="payload.confirmPassword"
             type="password"
             placeholder="Conferma la password"
             class="w-full py-2 pl-12 pr-2 transition ease-in-out border border-solid rounded-lg focus:border-blue-500 focus:outline-none"
