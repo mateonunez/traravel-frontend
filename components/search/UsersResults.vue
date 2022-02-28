@@ -36,7 +36,7 @@
             {{ user.roles[0].name }}
           </span>
 
-          <!-- This name is like a Pokemon -->
+          <!-- This sounds like a Pokemon name -->
           <span v-else>Traraveler</span>
         </div>
       </div>

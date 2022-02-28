@@ -5,7 +5,7 @@
         cn(
           'ease-in-out transition-all duration-1000 transform',
           focused
-            ? 'md:-translate-y-6 translate-y-4 focused'
+            ? 'md:-translate-y-6 translate-y-5 focused'
             : 'translate-y-1/2 md:w-96 w-72'
         )
       "
@@ -78,7 +78,7 @@
 
           <!-- Single travel result -->
           <div
-            class="px-12 mt-8 overflow-x-hidden overflow-y-scroll md:max-h-96 max-h-64"
+            class="px-12 mt-8 overflow-x-hidden overflow-y-scroll max-h-[33rem] md:max-h-96"
           >
             <TravelsResults :travels="travelsResults" />
             <ToursResults :tours="toursResults" />
