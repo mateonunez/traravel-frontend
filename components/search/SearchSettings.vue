@@ -3,6 +3,7 @@
     class="flex flex-row items-center justify-around w-full my-2 transform border-0 rounded-lg"
   >
     <div class="flex flex-row">
+      <!-- Filtering by entity -->
       <div
         v-for="(entity, index) in Object.values(searcheable)"
         :key="index"
@@ -31,8 +32,13 @@
     </div>
 
     <!-- Settings button   -->
-    <div class="flex flex-col mr-4">
-      <button type="button" class="" title="Impostazioni">
+    <div class="relative flex flex-col mr-4">
+      <button
+        type="button"
+        class=""
+        title="Impostazioni"
+        @click="menuOpen = !menuOpen"
+      >
         <Cog class="text-slate-700 hover:text-slate-900" />
       </button>
     </div>
@@ -53,7 +59,8 @@ export default {
 
   data: () => ({
     searcheableEntity: searcheableOptions.ALL,
-    searcheable: searcheableOptions
+    searcheable: searcheableOptions,
+    menuOpen: false
   }),
 
   computed: {

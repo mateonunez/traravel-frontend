@@ -18,7 +18,7 @@
     </div>
 
     <!-- Content -->
-    <div class="flex flex-col w-full px-4 py-8 mx-auto mt-20 md:w-1/2">
+    <div class="flex flex-col w-full max-w-2xl px-4 py-8 mx-auto mt-20">
       <!-- Title -->
       <div class="flex flex-row items-center justify-between">
         <div class="flex flex-col w-2/3">
@@ -30,7 +30,9 @@
     </div>
 
     <!-- Travel Edit Create -->
-    <div class="flex flex-col w-full sm:mx-auto">Coming soon...</div>
+    <div class="flex items-center justify-center mx-auto">
+      <UserEditCreate />
+    </div>
   </div>
 </template>
 
@@ -41,7 +43,8 @@ export default {
   components: {
     Navigator: () => import('~/components/common/Navigator'),
     ArrowLeft: () => import('~/components/icons/ArrowLeft'),
-    Cross: () => import('~/components/icons/Cross')
+    Cross: () => import('~/components/icons/Cross'),
+    UserEditCreate: () => import('~/components/users/UserEditCreate.vue')
   },
 
   middleware: ['auth', 'admin']
