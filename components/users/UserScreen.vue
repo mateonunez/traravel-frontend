@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col py-8 mt-10 sm:mx-auto md:w-1/2">
+  <div class="flex flex-col py-8 mx-8 mt-10 sm:mx-auto md:w-1/2">
     <!-- Title  -->
     <div class="flex flex-col">
       <h1 class="text-2xl font-bold leading-none text-slate-800">Users</h1>
