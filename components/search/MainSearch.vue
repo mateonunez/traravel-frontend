@@ -45,6 +45,24 @@
         >
           <Cross class="w-full h-full text-slate-600" />
         </button>
+
+        <!-- Shortcut -->
+        <div
+          :class="
+            cn(
+              'absolute top-0 right-0 w-6 h-6 transition duration-300 transform -translate-x-6 translate-y-5 ',
+              focused ? 'opacity-0' : 'opacity-100'
+            )
+          "
+        >
+          <div
+            class="flex flex-row items-center font-sans font-semibold no-underline text-slate-300 dark:text-slate-500"
+          >
+            <span>⌘</span>
+            <span class="text-xs text-sale-100">&nbsp;+&nbsp;</span>
+            <span>/</span>
+          </div>
+        </div>
       </div>
 
       <!-- Results -->
@@ -61,7 +79,7 @@
           :class="
             cn(
               'flex flex-col transition duration-300 transform opacity-100 ease-in-out',
-              searching ? 'opacity-0' : 'opacity-100'
+              searching && !query ? 'opacity-0' : 'opacity-100'
             )
           "
         >
@@ -172,6 +190,12 @@ export default {
     document.addEventListener('keyup', ({ key }) => {
       if (key === 'Escape') {
         this.resetQuery()
+      }
+    })
+
+    document.addEventListener('keydown', ({ metaKey, ctrlKey, key }) => {
+      if ((metaKey || ctrlKey) && key === '/') {
+        this.$refs.queryRef?.focus()
       }
     })
   },
